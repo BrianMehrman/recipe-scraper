@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:hsqldb:mem:bdbi_basis_datamart_test;DB_CLOSE_DELAY=1;sql.syntax_mys=true
+    username: sa
+    password:
+    driver-class-name: org.hsqldb.jdbc.JDBCDriver
+    initialization-mode: embedded
+    platform: hsqldb
+  jpa:
+    database: HSQL
+    generate-ddl: false
+    show-sql: true
+    hibernate:
+      ddl-auto: none
