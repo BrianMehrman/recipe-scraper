@@ -1,6 +1,6 @@
-package com.recipescrapper.models.repositories;
+package com.recipescrapper.repository;
 
-import com.recipescrapper.models.Recipe;
+import com.recipescrapper.model.Recipe;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
