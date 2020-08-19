@@ -1,76 +1,83 @@
 package com.recipescrapper.service;
 
+import com.recipescrapper.model.Recipe;
+import com.recipescrapper.repository.RecipeRepository;
+import com.recipescrapper.service.impl.RecipeServiceImpl;
+import com.recipescrapper.utils.HtmlGetter;
 import org.cactoos.text.TextOf;
-import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.stereotype.Repository;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.persistence.EntityManager;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 
 @ActiveProfiles("test")
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DataJpaTest(includeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = Repository.class))
-@RunWith(PowerMockRunner.class)
+@RunWith(SpringRunner.class)
 @PrepareForTest({Jsoup.class})
 public class RecipeServiceImplTest {
 
     @Autowired
-    private RecipeService service;
+    private TestEntityManager entityManager;
 
-    @Autowired
-    private EntityManager em;
+    @MockBean
+    private RecipeRepository repository;
 
-    private String readFromInputStream(InputStream inputStream)
-            throws IOException {
-        StringBuilder resultStringBuilder = new StringBuilder();
-        try (BufferedReader br
-                     = new BufferedReader(new InputStreamReader(inputStream))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                resultStringBuilder.append(line).append("\n");
-            }
-        }
-        return resultStringBuilder.toString();
+    private RecipeServiceImpl mockSite(String filePath) throws IOException {
+        String htmlString = new TextOf(
+                new File(filePath)
+        ).asString();
+        Document html = Jsoup.parse(htmlString);
+
+        HtmlGetter getter = mock(HtmlGetter.class);
+        Mockito.when(getter.getDocument(any(String.class))).thenReturn(html);
+        RecipeServiceImpl service = new RecipeServiceImpl(repository, getter);
+
+        return service;
     }
 
     @Test
-    public void whenExcute_scrapsHtml() throws IOException {
+    public void whenExcute_scrapsStaceyHomemakeSite() throws IOException {
         String url = "https://www.staceyhomemaker.com/buffalo-cauliflower-tacos/";
-        String htmlString = new TextOf(
-                new File("src/test/resources/recipes/bomb-ass-sample.html")
-        ).asString();
-
-        Document html = Jsoup.parse(htmlString);
-
-        PowerMockito.mockStatic(Jsoup.class);
-        Connection connection = Mockito.mock(Connection.class);
-        Mockito.when(connection.execute()).thenThrow(new IOException("test"));
-        Mockito.when(connection.get()).thenReturn(html);
-        PowerMockito.when(Jsoup.connect(Mockito.anyString())).
-                thenReturn(connection);
-
-
-        Document doc = Jsoup.connect(url).get();
-        Element title = doc.select("title").first();
-
-        String name = title.text();
-
+        RecipeServiceImpl service =  mockSite("src/test/resources/recipes/bomb-ass-sample.html");
+        Recipe recipe = service.scrapeUrl(url);
+        String name = recipe.getName();
         Assert.assertEquals("Bomb Ass Buffalo Cauliflower Tacos",name);
     }
+
+    @Test
+    public void whenExcute_scrapsFoodNetworkSite() throws IOException {
+        /*
+         * Food Network uses a structure of divs and paragraph tags. Will need to walk the tree
+         *                         o-Ingredients
+         *                      /                 \
+         *       o-Ingredients__m-Header       o-Ingredients__m-Body
+         *
+         *
+         * */
+        String url = "https://www.foodnetwork.com/recipes/food-network-kitchen/jambalaya-3362212";
+        RecipeServiceImpl service =  mockSite("src/test/resources/recipes/jambalaya-recipe.html");
+        Recipe recipe = service.scrapeUrl(url);
+        String name = recipe.getName();
+        Assert.assertEquals("Jambalaya Recipe | Food Network Kitchen | Food Network",name);
+    }
+
+
 }
