@@ -1,5 +1,7 @@
 package com.recipescrapper.service;
 
+import com.recipescrapper.model.Direction;
+import com.recipescrapper.model.Ingredient;
 import com.recipescrapper.model.Recipe;
 import com.recipescrapper.repository.RecipeRepository;
 import com.recipescrapper.service.impl.RecipeServiceImpl;
@@ -24,6 +26,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -59,25 +62,40 @@ public class RecipeServiceImplTest {
         RecipeServiceImpl service =  mockSite("src/test/resources/recipes/bomb-ass-sample.html");
         Recipe recipe = service.scrapeUrl(url);
         String name = recipe.getName();
-        Assert.assertEquals("Bomb Ass Buffalo Cauliflower Tacos",name);
+        List<Ingredient> ingredients = recipe.getIngredients();
+        List<Direction> directions = recipe.getDirections();
+        Assert.assertEquals("Bomb Ass Buffalo Cauliflower Tacos", name);
+
+        Assert.assertEquals(13, ingredients.size());
+        Assert.assertEquals(6, directions.size());
     }
 
     @Test
     public void whenExcute_scrapsFoodNetworkSite() throws IOException {
-        /*
-         * Food Network uses a structure of divs and paragraph tags. Will need to walk the tree
-         *                         o-Ingredients
-         *                      /                 \
-         *       o-Ingredients__m-Header       o-Ingredients__m-Body
-         *
-         *
-         * */
         String url = "https://www.foodnetwork.com/recipes/food-network-kitchen/jambalaya-3362212";
         RecipeServiceImpl service =  mockSite("src/test/resources/recipes/jambalaya-recipe.html");
         Recipe recipe = service.scrapeUrl(url);
         String name = recipe.getName();
-        Assert.assertEquals("Jambalaya Recipe | Food Network Kitchen | Food Network",name);
+        List<Ingredient> ingredients = recipe.getIngredients();
+        List<Direction> directions = recipe.getDirections();
+
+        Assert.assertEquals("Jambalaya Recipe | Food Network Kitchen | Food Network", name);
+        Assert.assertEquals(13, ingredients.size());
+        Assert.assertEquals(4, directions.size());
     }
 
+    @Test
+    public void whenExecute_scrapesRecipeChildren() throws IOException {
+        String url = "https://www.foodsite.com/recipes/recipe-children";
+        RecipeServiceImpl service = mockSite("src/test/resources/recipes/recipe-children.html");
+        Recipe recipe = service.scrapeUrl(url);
+        String name = recipe.getName();
+        List<Ingredient> ingredients = recipe.getIngredients();
+        List<Direction> directions = recipe.getDirections();
+
+        Assert.assertEquals("Chicken Soup", name);
+        Assert.assertEquals(7, ingredients.size());
+        Assert.assertEquals(5, directions.size());
+    }
 
 }

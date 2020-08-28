@@ -28,4 +28,6 @@ public class Recipe {
     private Timestamp updatedAt;
     @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY, targetEntity = Ingredient.class)
     private List<Ingredient> ingredients;
+    @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY, targetEntity = Direction.class)
+    private List<Direction> directions;
 }

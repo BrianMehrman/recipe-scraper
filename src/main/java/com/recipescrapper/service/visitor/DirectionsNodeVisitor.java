@@ -1,22 +1,23 @@
 package com.recipescrapper.service.visitor;
 
+import com.recipescrapper.model.Direction;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 import org.jsoup.select.NodeVisitor;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class DirectionsNodeVisitor implements NodeVisitor {
 
     private final String regex = "(?i)direction[s]*|instruction[s]*";
-    private List<String> store;
+    private List<Direction> store;
     private Elements visited = new Elements();
     private Boolean directionsFound;
 
-    public DirectionsNodeVisitor(List<String> store) {
+    public DirectionsNodeVisitor(List<Direction> store) {
         this.store = store;
         this.directionsFound = false;
     }
@@ -64,8 +65,11 @@ public class DirectionsNodeVisitor implements NodeVisitor {
         Elements elements = e.select("li,p");
 
         List<String> list = elements.eachText();
-        List<String> directions = list.stream()
+        AtomicInteger index = new AtomicInteger();
+
+        List<Direction> directions = list.stream()
                 .filter(str -> !str.isBlank())
+                .map(str -> new Direction(str, index.incrementAndGet()))
                 .collect(Collectors.toList());
         store.addAll(directions);
         directionsFound = true;

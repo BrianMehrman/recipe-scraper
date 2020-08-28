@@ -1,5 +1,6 @@
 package com.recipescrapper.service.visitor;
 
+import com.recipescrapper.model.Ingredient;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
@@ -21,11 +22,11 @@ import java.util.stream.Collectors;
 public class IngredientsNodeVisitor implements NodeVisitor {
 
     private final String regex = "(?i)ingredient[s]*";
-    private List<String> store;
+    private List<Ingredient> store;
     private Elements visited = new Elements();
     private Boolean ingredientsFound;
 
-    public IngredientsNodeVisitor(List<String> store) {
+    public IngredientsNodeVisitor(List<Ingredient> store) {
         this.store = store;
         this.ingredientsFound = false;
     }
@@ -77,8 +78,9 @@ public class IngredientsNodeVisitor implements NodeVisitor {
         Elements elements = e.select("li,p");
 
         List<String> list = elements.eachText();
-        List<String> ingredients = list.stream()
+        List<Ingredient> ingredients = list.stream()
                 .filter(str -> !str.isBlank())
+                .map(str -> new Ingredient(str))
                 .collect(Collectors.toList());
         store.addAll(ingredients);
         ingredientsFound = true;

@@ -1,5 +1,7 @@
 package com.recipescrapper.service.impl;
 
+import com.recipescrapper.model.Direction;
+import com.recipescrapper.model.Ingredient;
 import com.recipescrapper.model.Recipe;
 import com.recipescrapper.repository.RecipeRepository;
 import com.recipescrapper.service.RecipeService;
@@ -36,18 +38,30 @@ public class RecipeServiceImpl implements RecipeService {
     public Recipe scrapeUrl(String urlString) throws IOException {
         Recipe recipe = new Recipe();
         Document doc = getter.getDocument(urlString);
+        Timestamp now = Timestamp.valueOf(LocalDateTime.now());
 
         Element title = doc.select("title").first();
-
-        List<String> ingredients = findIngredients(doc);
-        List<String> directions = findDirections(doc);
-
         String name = title.text();
         recipe.setId(RandomStringUtils.randomAlphanumeric(20));
+
+        List<Ingredient> ingredients = findIngredients(doc);
+        ingredients.forEach(ingredient ->  {
+            ingredient.setRecipe(recipe);
+            ingredient.setCreatedAt(now);
+            ingredient.setUpdatedAt(now);
+        });
+        recipe.setIngredients(ingredients);
+
+        List<Direction> directions = findDirections(doc);
+        directions.forEach(direction -> {
+            direction.setRecipe(recipe);
+            direction.setCreatedAt(now);
+            direction.setUpdatedAt(now);
+        });
+        recipe.setDirections(directions);
+
         recipe.setDuration(30);
         recipe.setName(name);
-
-        Timestamp now = Timestamp.valueOf(LocalDateTime.now());
         recipe.setCreatedAt(now);
         recipe.setUpdatedAt(now);
         repository.save(recipe);
@@ -55,16 +69,16 @@ public class RecipeServiceImpl implements RecipeService {
         return recipe;
     }
 
-    private List<String> findDirections(Document doc) {
-        List<String> store = new ArrayList<>();
+    private List<Direction> findDirections(Document doc) {
+        List<Direction> store = new ArrayList<>();
         DirectionsNodeVisitor visitor = new DirectionsNodeVisitor(store);
         Elements elements = doc.children();
         NodeTraversor.traverse(visitor, elements);
 
         return store;
     }
-    private List<String> findIngredients(Document doc) {
-        List<String> store = new ArrayList<>();
+    private List<Ingredient> findIngredients(Document doc) {
+        List<Ingredient> store = new ArrayList<>();
         IngredientsNodeVisitor visitor = new IngredientsNodeVisitor(store);
         Elements elements = doc.children();
         NodeTraversor.traverse(visitor, elements);
