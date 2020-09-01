@@ -10,3 +10,5 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: create
+server:
+  port: 5391
