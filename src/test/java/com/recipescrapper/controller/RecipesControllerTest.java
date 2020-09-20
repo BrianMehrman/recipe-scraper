@@ -1,7 +1,9 @@
 package com.recipescrapper.controller;
 
 import com.recipescrapper.model.Recipe;
+import com.recipescrapper.repository.RecipeRepository;
 import com.recipescrapper.service.RecipeService;
+import com.recipescrapper.utils.HtmlGetter;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -17,6 +19,12 @@ public class RecipesControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private RecipeRepository recipeRepository;
+
+    @Autowired
+    private HtmlGetter htmlGetter;
 
     @MockBean
     private RecipeService recipeService;

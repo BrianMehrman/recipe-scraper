@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:hsqldb:mem:bdbi_basis_datamart_dev;DB_CLOSE_DELAY=1;sql.syntax_pgs=true
+    url: jdbc:hsqldb:mem:bdbi_basis_datamart_dev;DB_CLOSE_DELAY=1
     username: sa
-    password: sa
+    password:
     driver-class-name: org.hsqldb.jdbc.JDBCDriver
   jpa:
     database: HSQL
