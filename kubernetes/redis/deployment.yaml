@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  labels:
+    app: shouter
+    component: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: shouter
+      component: redis
+  template:
+    metadata:
+      labels:
+        app: shouter
+        component: redis
+    spec:
+      containers:
+        - name: redis
+          image: redis:3.2.10
+          resources:
+            requests:
+              memory: 50Mi
+              cpu: 100m
+            limits:
+              memory: 1Gi
+              cpu: 1

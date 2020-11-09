@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  labels:
+    app: shouter
+    component: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: shouter
+      component: postgres
+  template:
+    metadata:
+      labels:
+        app: shouter
+        component: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:12.4
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres
+                  key: password
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres
+                  key: user
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres
+                  key: database
