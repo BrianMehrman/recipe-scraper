@@ -43,27 +43,25 @@ public class RecipeServiceImplTest {
     @MockBean
     private RecipeRepository repository;
 
-    private RecipeServiceImpl mockSite(String filePath) throws IOException {
-        String htmlString = new TextOf(
-                new File(filePath)
-        ).asString();
-        Document html = Jsoup.parse(htmlString);
+    private RecipeServiceImpl mockSite(final String filePath) throws IOException {
+        final String htmlString = new TextOf(new File(filePath)).asString();
+        final Document html = Jsoup.parse(htmlString);
 
-        HtmlGetter getter = mock(HtmlGetter.class);
+        final HtmlGetter getter = mock(HtmlGetter.class);
         Mockito.when(getter.getDocument(any(String.class))).thenReturn(html);
-        RecipeServiceImpl service = new RecipeServiceImpl(repository, getter);
+        final RecipeServiceImpl service = new RecipeServiceImpl(repository, getter);
 
         return service;
     }
 
     @Test
     public void whenExcute_scrapsStaceyHomemakeSite() throws IOException {
-        String url = "https://www.staceyhomemaker.com/buffalo-cauliflower-tacos/";
-        RecipeServiceImpl service =  mockSite("src/test/resources/recipes/bomb-ass-sample.html");
-        Recipe recipe = service.scrapeUrl(url);
-        String name = recipe.getName();
-        List<Ingredient> ingredients = recipe.getIngredients();
-        List<Direction> directions = recipe.getDirections();
+        final String url = "https://www.staceyhomemaker.com/buffalo-cauliflower-tacos/";
+        final RecipeServiceImpl service = mockSite("src/test/resources/recipes/bomb-ass-sample.html");
+        final Recipe recipe = service.scrapeUrl(url);
+        final String name = recipe.getName();
+        final List<Ingredient> ingredients = recipe.getIngredients();
+        final List<Direction> directions = recipe.getDirections();
         Assert.assertEquals("Bomb Ass Buffalo Cauliflower Tacos", name);
 
         Assert.assertEquals(13, ingredients.size());
@@ -72,12 +70,12 @@ public class RecipeServiceImplTest {
 
     @Test
     public void whenExcute_scrapsFoodNetworkSite() throws IOException {
-        String url = "https://www.foodnetwork.com/recipes/food-network-kitchen/jambalaya-3362212";
-        RecipeServiceImpl service =  mockSite("src/test/resources/recipes/jambalaya-recipe.html");
-        Recipe recipe = service.scrapeUrl(url);
-        String name = recipe.getName();
-        List<Ingredient> ingredients = recipe.getIngredients();
-        List<Direction> directions = recipe.getDirections();
+        final String url = "https://www.foodnetwork.com/recipes/food-network-kitchen/jambalaya-3362212";
+        final RecipeServiceImpl service = mockSite("src/test/resources/recipes/jambalaya-recipe.html");
+        final Recipe recipe = service.scrapeUrl(url);
+        final String name = recipe.getName();
+        final List<Ingredient> ingredients = recipe.getIngredients();
+        final List<Direction> directions = recipe.getDirections();
 
         Assert.assertEquals("Jambalaya Recipe | Food Network Kitchen | Food Network", name);
         Assert.assertEquals(13, ingredients.size());
@@ -86,12 +84,12 @@ public class RecipeServiceImplTest {
 
     @Test
     public void whenExecute_scrapesRecipeChildren() throws IOException {
-        String url = "https://www.foodsite.com/recipes/recipe-children";
-        RecipeServiceImpl service = mockSite("src/test/resources/recipes/recipe-children.html");
-        Recipe recipe = service.scrapeUrl(url);
-        String name = recipe.getName();
-        List<Ingredient> ingredients = recipe.getIngredients();
-        List<Direction> directions = recipe.getDirections();
+        final String url = "https://www.foodsite.com/recipes/recipe-children";
+        final RecipeServiceImpl service = mockSite("src/test/resources/recipes/recipe-children.html");
+        final Recipe recipe = service.scrapeUrl(url);
+        final String name = recipe.getName();
+        final List<Ingredient> ingredients = recipe.getIngredients();
+        final List<Direction> directions = recipe.getDirections();
 
         Assert.assertEquals("Chicken Soup", name);
         Assert.assertEquals(7, ingredients.size());
