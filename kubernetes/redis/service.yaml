@@ -3,12 +3,12 @@ kind: Service
 metadata:
   name: redis
   labels:
-    app: shouter
+    app: recipe-box
     component: redis
 spec:
   ports:
     - port: 6379
       targetPort: 6379
   selector:
-    app: shouter
+    app: recipe-box
     component: redis

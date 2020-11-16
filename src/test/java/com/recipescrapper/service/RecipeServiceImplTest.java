@@ -55,7 +55,7 @@ public class RecipeServiceImplTest {
     }
 
     @Test
-    public void whenExcute_scrapsStaceyHomemakeSite() throws IOException {
+    public void whenExecute_scrapsStaceyHomemakerSite() throws IOException {
         final String url = "https://www.staceyhomemaker.com/buffalo-cauliflower-tacos/";
         final RecipeServiceImpl service = mockSite("src/test/resources/recipes/bomb-ass-sample.html");
         final Recipe recipe = service.scrapeUrl(url);
@@ -69,7 +69,7 @@ public class RecipeServiceImplTest {
     }
 
     @Test
-    public void whenExcute_scrapsFoodNetworkSite() throws IOException {
+    public void whenExecute_scrapsFoodNetworkSite() throws IOException {
         final String url = "https://www.foodnetwork.com/recipes/food-network-kitchen/jambalaya-3362212";
         final RecipeServiceImpl service = mockSite("src/test/resources/recipes/jambalaya-recipe.html");
         final Recipe recipe = service.scrapeUrl(url);

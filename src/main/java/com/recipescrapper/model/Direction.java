@@ -15,9 +15,9 @@ public class Direction {
     private String description;
     @Column(name="step")
     private Integer step;
-    @Column(columnDefinition = "datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP", name="created_at")
+    @Column(columnDefinition = "timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP", name="created_at")
     private Timestamp createdAt;
-    @Column(columnDefinition = "datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP", name="updated_at")
+    @Column(columnDefinition = "timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP", name="updated_at")
     private Timestamp updatedAt;
     @ManyToOne(fetch= FetchType.LAZY, targetEntity = Recipe.class)
     private Recipe recipe;

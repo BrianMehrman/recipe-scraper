@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/recipe_box
+    username: postgres
+    password: password
+  jpa:
+    database: POSTGRESQL
+    generate-ddl: true
+    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+server:
+  port: 9101

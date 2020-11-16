@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: postgres
+  name: web
   labels:
     app: recipe-box
-    component: postgres
+    component: web
 spec:
   ports:
-    - port: 5432
-      targetPort: 5432
+  - port: 9101
+    targetPort: 9101
   selector:
     app: recipe-box
-    component: postgres
+    component: web

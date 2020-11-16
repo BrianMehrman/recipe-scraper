@@ -22,9 +22,9 @@ public class Recipe {
     private String name;
     @Column(name="duration")
     private Integer duration;
-    @Column(columnDefinition = "datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP", name="created_at")
+    @Column(columnDefinition = "timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP", name="created_at")
     private Timestamp createdAt;
-    @Column(columnDefinition = "datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP", name="updated_at")
+    @Column(columnDefinition = "timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP", name="updated_at")
     private Timestamp updatedAt;
     @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY, targetEntity = Ingredient.class)
     private List<Ingredient> ingredients;

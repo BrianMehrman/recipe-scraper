@@ -20,9 +20,9 @@ public class Ingredient {
     private Double amount;
     @Column(name="ingredient_type")
     private String ingredientType;
-    @Column(columnDefinition = "datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP", name="created_at")
+    @Column(columnDefinition = "timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP", name="created_at")
     private Timestamp createdAt;
-    @Column(columnDefinition = "datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP", name="updated_at")
+    @Column(columnDefinition = "timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP", name="updated_at")
     private Timestamp updatedAt;
     @ManyToOne(fetch= FetchType.LAZY, targetEntity = Recipe.class)
     private Recipe recipe;

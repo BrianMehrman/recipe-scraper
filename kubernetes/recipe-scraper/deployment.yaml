@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  labels:
+    app: recipe-box
+    component: web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: recipe-box
+      component: web
+  template:
+    metadata:
+      labels:
+        app: recipe-box
+        component: web
+    spec:
+      containers:
+        - name: web
+          image: bcmehrman/recipe-scraper:0.0.2
+          env:
+            - name: SPRING_DATASOURCE_USERNAME # Name of the environment variable
+              valueFrom:          # Get the value of environment variable from kubernetes secrets
+                secretKeyRef:
+                  name: postgres
+                  key: user
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres
+                  key: password
+          envFrom:
+            - configMapRef:
+                name: recipe-scraper

@@ -1,14 +1,19 @@
 spring:
   datasource:
-    url: jdbc:hsqldb:mem:bdbi_basis_datamart_dev;DB_CLOSE_DELAY=1;sql.syntax_pgs=true
-    username: sa
-    password: sa
-    driver-class-name: org.hsqldb.jdbc.JDBCDriver
+    url: ${DATASOURCE_URL}
+    username: ${DATASOURCE_USERNAME}
+    password: ${DATASOURCE_PW}
   jpa:
-    database: HSQL
+    database: POSTGRESQL
     generate-ddl: true
     show-sql: true
     hibernate:
       ddl-auto: create
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
 server:
-  port: 5391
+  port: 9101
+  compression:
+    enabled: true
+    min-response-size: 1024
+    mime-types: text/csv,application/json

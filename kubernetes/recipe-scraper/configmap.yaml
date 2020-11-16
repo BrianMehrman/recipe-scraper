@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: recipe-scraper
+data:
+  SPRING_PROFILES_ACTIVE: dev
+  SPRING_DATASOURCE_URL: jdbc:postgresql://postgres/recipe_box?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false
+  SERVER_PORT: '9101'

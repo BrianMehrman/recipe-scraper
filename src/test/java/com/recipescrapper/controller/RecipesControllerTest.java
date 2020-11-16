@@ -1,30 +1,25 @@
 package com.recipescrapper.controller;
 
 import com.recipescrapper.model.Recipe;
-import com.recipescrapper.repository.RecipeRepository;
 import com.recipescrapper.service.RecipeService;
-import com.recipescrapper.utils.HtmlGetter;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
+@ActiveProfiles("test")
+@WebMvcTest(RecipesController.class)
 public class RecipesControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @Autowired
-    private RecipeRepository recipeRepository;
-
-    @Autowired
-    private HtmlGetter htmlGetter;
 
     @MockBean
     private RecipeService recipeService;
