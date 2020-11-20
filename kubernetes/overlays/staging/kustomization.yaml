@@ -7,10 +7,3 @@ resources:
   - recipe-scraper/deployment.yaml
   - recipe-scraper/service.yaml
 
-# patchesJson6902:
-#   - target:
-#       group: apps
-#       version: v1
-#       kind: Deployment
-#       name: postgres
-#     path: postgres_hostpath_volume_patch.yaml
