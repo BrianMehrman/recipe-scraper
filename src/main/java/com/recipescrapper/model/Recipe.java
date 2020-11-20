@@ -1,7 +1,9 @@
 package com.recipescrapper.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -13,6 +15,8 @@ import java.util.List;
 @Getter
 @Setter
 @Table(name="recipes")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Recipe {
 
     @Id

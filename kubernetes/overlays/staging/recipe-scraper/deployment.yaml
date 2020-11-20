@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: web
-          image: bcmehrman/recipe-scraper:0.0.2
+          image: bcmehrman/recipe-scraper:0.0.3
           env:
             - name: SPRING_DATASOURCE_USERNAME # Name of the environment variable
               valueFrom:          # Get the value of environment variable from kubernetes secrets

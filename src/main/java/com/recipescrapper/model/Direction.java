@@ -1,6 +1,8 @@
 package com.recipescrapper.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -8,6 +10,8 @@ import java.sql.Timestamp;
 @Data
 @Entity
 @Table(name="directions")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Direction {
     @Id @Column(name="id")
     private String id;
@@ -26,4 +30,5 @@ public class Direction {
         this.description = description;
         this.step = step;
     }
+
 }

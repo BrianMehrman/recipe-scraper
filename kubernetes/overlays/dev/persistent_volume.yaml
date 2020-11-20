@@ -19,7 +19,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   labels:
-    app: postgres
+    app: recipe-box
   name: postgres-pv-claim
 spec:
   storageClassName: manual

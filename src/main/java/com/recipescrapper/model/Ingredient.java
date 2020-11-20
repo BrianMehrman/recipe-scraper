@@ -1,6 +1,8 @@
 package com.recipescrapper.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -8,6 +10,8 @@ import java.sql.Timestamp;
 @Data
 @Entity
 @Table(name="ingredients")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Ingredient {
     @Id
     @Column(name="id")

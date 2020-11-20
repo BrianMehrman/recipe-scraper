@@ -5,4 +5,10 @@ metadata:
 deploy:
   kustomize:
     paths:
-    - kubernetes
+     - kubernetes/overlays/dev
+profiles:
+  - name: staging
+    deploy:
+      kustomize:
+        paths:
+         - kubernetes/overlays/staging
