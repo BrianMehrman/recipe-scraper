@@ -20,9 +20,9 @@ spec:
       containers:
         - name: postgres
           image: postgres:12.4
-          volumeMounts:
-            - mountPath: /var/lib/postgresql/data
-              name: postgres-pv-claim
+          # volumeMounts:
+          #   - mountPath: /var/lib/postgresql/data
+          #     name: postgres-pv-claim
           env:
             - name: POSTGRES_PASSWORD
               valueFrom:
@@ -39,7 +39,7 @@ spec:
                 configMapKeyRef:
                   name: postgres
                   key: database
-      volumes:
-        - name: postgres-pv-claim
-          persistentVolumeClaim:
-            claimName: postgres-pv-claim
+      # volumes:
+      #   - name: postgres-pv-claim
+      #     persistentVolumeClaim:
+      #       claimName: postgres-pv-claim

@@ -15,24 +15,24 @@ import org.springframework.data.redis.serializer.GenericToStringSerializer;
 @Configuration
 public class RedisConfig {
 
-    @Bean
+    @Bean(name = "jedisConnectionFactory")
     JedisConnectionFactory jedisConnectionFactory() {
         return new JedisConnectionFactory();
     }
 
-    @Bean
+    @Bean(name = "redisTemplate")
     public RedisTemplate<String, Object> redisTemplate() {
-        final RedisTemplate<String, Object> template = new RedisTemplate<String, Object>();
+        final RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(jedisConnectionFactory());
-        template.setValueSerializer(new GenericToStringSerializer<Object>(Object.class));
+        template.setValueSerializer(new GenericToStringSerializer<>(Object.class));
         return template;
     }
 
-    @Bean
+    @Bean(name = "messageListener")
     MessageListenerAdapter messageListener() {
         return new MessageListenerAdapter(new RedisMessageSubscriber());
     }
-    @Bean
+    @Bean(name = "redisContainer")
     RedisMessageListenerContainer redisContainer() {
         RedisMessageListenerContainer container
                 = new RedisMessageListenerContainer();
@@ -41,12 +41,12 @@ public class RedisConfig {
         return container;
     }
 
-    @Bean
+    @Bean(name = "redisPublisher")
     MessagePublisher redisPublisher() {
         return new RedisMessagePublisher(redisTemplate(), topic());
     }
 
-    @Bean
+    @Bean(name = "topic")
     ChannelTopic topic() {
         return new ChannelTopic("messageQueue");
     }
